@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-import sys
+import hidden_4
 if __name__ == "__main__":
-    sumo = 0
-    for i in range(1, len(sys.argv)):
-        sumo += int(sys.argv[i])
-    print(sumo)
+    for directory in dir(hidden_4):
+        if directory[0] != "_":
+            print(directory)
