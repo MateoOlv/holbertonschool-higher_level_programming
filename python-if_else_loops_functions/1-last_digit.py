@@ -4,7 +4,9 @@ number = random.randint(-10000, 10000)
 lastd = number % 10
 
 if lastd < 0:
-    lastd *= -1    
+    lastd *= -1
+if number == 0:
+	lastd = 0  
 if lastd > 5:
 	status = ("and is greater than 5")
 elif lastd == 0:
