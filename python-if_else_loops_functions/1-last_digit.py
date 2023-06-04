@@ -8,9 +8,9 @@ if lastd < 0:
 if number == 0:
 	lastd = 0  
 if lastd > 5:
-	status = ("and is greater than 5")
+	status = ("is greater than 5")
 elif lastd == 0:
-	status = ("and is 0")
+	status = ("is 0")
 else:
-	status = ("and is less than 6 and not 0")
+	status = ("is less than 6 and not 0")
 print("Last digit of {0} is {1} and {2}".format(number, lastd, status))
