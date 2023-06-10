@@ -3,11 +3,10 @@ def roman_to_int(roman_string):
     sum = 0
     if not roman_string or type(roman_string) is not str:
         return 0
-    iT =  {"M": 1000, "D": 500, "C": 100,
-            "L": 50, "X": 10, "V": 5, "I": 1}
+    iT = {"M": 1000, "D": 500, "C": 100, "L": 50, "X": 10, "V": 5, "I": 1}
     aList = [iT.get(x) for x in roman_string]
     for idx, char in enumerate(aList):
-        if(idx < len(aList) - 1):
+        if (idx < len(aList) - 1):
             if aList[idx + 1] > char:
                 sum -= char
             else:
