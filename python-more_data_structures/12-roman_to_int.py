@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 def roman_to_int(roman_string):
+    sum = 0
     if not roman_string or type(roman_string) is not str:
         return 0
     iT =  {"M": 1000, "D": 500, "C": 100,
