@@ -46,5 +46,5 @@ class Square:
         for i in range(self.size):
             print("{}{}".format(" " * self.position[0], "#" * self.size))
         if self.size == 0:
-            print("")
+            print()
             return
