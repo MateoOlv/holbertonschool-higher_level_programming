@@ -6,5 +6,5 @@ class Square:
     """Define init."""
 
     def __init__(self, size=0):
-        self.__size = __size
+        self.__size = size
     pass
