@@ -5,8 +5,9 @@
 class Square:
     """Define init."""
 
-    def __init__(self, size=0):
+    def __init__(self, size=0, position=(0, 0)):
         self.__size = size
+        self.position = position
     """Define size property"""
     @property
     def size(self):
@@ -25,6 +26,18 @@ class Square:
     def area(self):
         return (self.__size**2)
 
+    """define position property"""
+    @property
+    def position(self):
+        return (self.__position)
+    """Define position setter"""
+    @position.setter
+    def position(self, value):
+        if (type(value) != tuple or len(value) != 2):
+            raise (TypeError("position must be a tuple of 2 positive integers"))
+        if (type(value[0]) != int or type(value[1]) != int):
+            raise (TypeError("position must be a tuple of 2 positive integers"))
+        self.__position = (value[0], value[1])
     """Define myprint"""
 
     def my_print(self):
