@@ -8,7 +8,7 @@ class Rectangle:
     """makes rectangle object"""
     number_of_instances = 0
     print_symbol = '#'
-    
+
     def __init__(self, width=0, height=0):
         self.width = width
         self.height = height
@@ -53,11 +53,11 @@ class Rectangle:
     def __str__(self):
         if self.__width == 0 or self.__height == 0:
             return ""
-        return('\n'.join("{}".format(
+        return ('\n'.join("{}".format(
             self.print_symbol) * self.width for x in range(self.height)))
 
     def __repr__(self):
-        return("Rectangle({}, {})".format(self.width, self.height))
+        return ("Rectangle({}, {})".format(self.width, self.height))
 
     def __del__(self):
         print("Bye rectangle...")
