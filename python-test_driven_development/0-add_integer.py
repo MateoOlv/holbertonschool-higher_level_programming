@@ -1,2 +1,4 @@
 #!/usr/bin/python3
-def add_integer(a, b=98):
+def print_list_integer(my_list=[]):
+    for i in my_list:
+        print('{:d}'.format(i))
