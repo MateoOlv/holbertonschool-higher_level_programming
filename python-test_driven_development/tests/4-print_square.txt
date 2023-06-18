@@ -1,0 +1,34 @@
+The ``4-print_square`` module
+======================
+
+Using ``print_square``
+-------------------
+
+    >>> print_square = __import__('4-print_square').print_square
+    
+    >>> print_square(5)
+    #####
+    #####
+    #####
+    #####
+    #####
+
+    >>> print_square('3')
+    Traceback (most recent call last):
+    ...
+    TypeError: size must be an integer
+
+    >>> print_square()
+    Traceback (most recent call last):
+    ...
+    TypeError: print_square() missing 1 required positional argument: 'size'
+
+    >>> print_square(-909)
+    Traceback (most recent call last):
+    ...
+    ValueError: size must be >= 0
+
+    >>> print_square(int(float('inf')))
+    Traceback (most recent call last):
+    ...
+    OverflowError: cannot convert float infinity to integer
