@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import json
 """Def from json string"""
+import json
+
 
 
 def from_json_string(my_str):
