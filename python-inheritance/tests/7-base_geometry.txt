@@ -1,0 +1,115 @@
+The ``7-base_geometry`` module
+======================
+
+Using ``integer_validator``
+-------------------
+
+    >>> BaseGeometry = __import__('7-base_geometry').BaseGeometry
+    
+    >>> bg = BaseGeometry()
+
+    >>> BaseGeometry.integer_validator()
+    Traceback (most recent call last):
+    ...
+    TypeError: integer_validator() missing 3 required positional arguments: 'self', 'name', and 'value'
+
+    >>> bg.integer_validator("number", 17)
+
+    >>> bg.integer_validator("notNumber", "henlo")
+    Traceback (most recent call last):
+    ...
+    TypeError: notNumber must be an integer
+
+    >>> bg.integer_validator("number", -363)
+    Traceback (most recent call last):
+    ...
+    ValueError: number must be greater than 0
+
+    >>> bg.integer_validator()
+    Traceback (most recent call last):
+    ...
+    TypeError: integer_validator() missing 2 required positional arguments: 'name' and 'value'
+
+    >>> bg.integer_validator("float", 1.7)
+    Traceback (most recent call last):
+    ...
+    TypeError: float must be an integer
+
+    >>> bg.integer_validator("list", [1, 2, 3])
+    Traceback (most recent call last):
+    ...
+    TypeError: list must be an integer
+
+    >>> bg.integer_validator(None, 9001)
+
+    >>> bg.area()
+    Traceback (most recent call last):
+    ...
+    Exception: area() is not implemented
+
+    >>> bg.integer_validator("set", {1, 3})
+    Traceback (most recent call last):
+    ...
+    TypeError: set must be an integer
+
+    >>> bg.integer_validator("definitelyAnInt", int("e"))
+    Traceback (most recent call last):
+    ...
+    ValueError: invalid literal for int() with base 10: 'e'
+
+    >>> bg.integer_validator("NoValue")
+    Traceback (most recent call last):
+    ...
+    TypeError: integer_validator() missing 1 required positional argument: 'value'
+
+    >>> bg.integer_validator("An Int Fr", int("66"))
+
+    >>> bg.integer_validator("tuple", (1, 3))
+    Traceback (most recent call last):
+    ...
+    TypeError: tuple must be an integer
+
+    >>> bg.integer_validator(False, int(float('inf')))
+    Traceback (most recent call last):
+    ...
+    OverflowError: cannot convert float infinity to integer
+
+    >>> bg.integer_validator("Zero", 0)
+    Traceback (most recent call last):
+    ...
+    ValueError: Zero must be greater than 0
+
+    >>> bg.integer_validator(None)
+    Traceback (most recent call last):
+    ...
+    TypeError: integer_validator() missing 1 required positional argument: 'value'
+
+    >>> bg.integer_validator(None, False)
+    Traceback (most recent call last):
+    ...
+    TypeError: None must be an integer
+
+    >>> bg.integer_validator("scrum", int(float('-inf')))
+    Traceback (most recent call last):
+    ...
+    OverflowError: cannot convert float infinity to integer
+
+    >>> bg.integer_validator(None, None)
+    Traceback (most recent call last):
+    ...
+    TypeError: None must be an integer
+
+    >>> bg.integer_validator("list", [1])
+    Traceback (most recent call last):
+    ...
+    TypeError: list must be an integer
+
+    >>> bg.integer_validator(False, float('NaN'))
+    Traceback (most recent call last):
+    ...
+    TypeError: False must be an integer
+
+    >>> bg.integer_validator("atALossForWords", (96, ))
+    Traceback (most recent call last):
+    ...
+    TypeError: atALossForWords must be an integer
