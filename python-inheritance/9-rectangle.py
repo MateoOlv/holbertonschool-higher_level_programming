@@ -14,7 +14,12 @@ class BaseGeometry:
         if value < 1:
             raise ValueError("{} must be greater than 0".format(name))
 
-"""Class rectangle"""
+
+"""
+Class rectangle
+"""
+
+
 class Rectangle(BaseGeometry):
     """creates rectangle class"""
     def __init__(self, width, height):
