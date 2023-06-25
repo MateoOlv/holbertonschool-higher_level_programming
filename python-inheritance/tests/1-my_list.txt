@@ -23,3 +23,12 @@ Using ``print_sorted``
     >>> print_sorted([-3, 3, 19, -19])
     [-19, -3, 3, 19]
 
+    >>> print_sorted(None)
+    Traceback (most recent call last):
+    ...
+    TypeError: 'NoneType' object is not iterable
+
+    >>> print_sorted([None, 3])
+    Traceback (most recent call last):
+    ...
+    TypeError: '<' not supported between instances of 'int' and 'NoneType'
