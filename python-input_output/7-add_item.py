@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""imports"""
+"""
+imports
+"""
 from sys import argv
 from os import path
 
