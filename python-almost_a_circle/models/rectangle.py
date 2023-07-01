@@ -5,6 +5,7 @@ from models.base import Base
 
 class Rectangle(Base):
     def __init__(self, width, height, x=0, y=0, id=None):
+        super().__init__(id)
         self.width = width
         self.height = height
         self.x = x
@@ -13,7 +14,6 @@ class Rectangle(Base):
         self.__height = None
         self.__x = None
         self.__y = None 
-        super().__init__(id)
     
     """Property of all"""
 
@@ -37,6 +37,7 @@ class Rectangle(Base):
 
     """Setters of all"""
 
+
     @width.setter
     def width(self, value):
         if not isinstance(value, int):
@@ -44,6 +45,7 @@ class Rectangle(Base):
         if value <= 0:
             raise ValueError("width must be > 0")
         self.__width = value
+
     @height.setter
     def height(self, value):
         if not isinstance(value, int):
@@ -51,6 +53,7 @@ class Rectangle(Base):
         if value <= 0:
             raise ValueError("height must be > 0")
         self.__height = value
+
     @x.setter
     def x(self, value):
         if not isinstance(value, int):
@@ -58,6 +61,7 @@ class Rectangle(Base):
         if value <= 0:
             raise ValueError("x must be > 0")
         self.__x = value
+
     @y.setter
     def y(self, value):
         if not isinstance(value, int):
