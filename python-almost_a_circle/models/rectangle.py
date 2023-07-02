@@ -1,16 +1,29 @@
 #!/usr/bin/python3
 """imports"""
+
+
 from models.base import Base
 
 
 class Rectangle(Base):
     """Rect base"""
     def __init__(self, width, height, x=0, y=0, id=None):
-        """init values"""
-        self.width = width
-        self.height = height
-        self.x = x
-        self.y = y
+        """ init values """
+        argVals = [width, height, x, y]
+        argNam = ["width", "height", "x", "y"]
+        for ind, arg in enumerate(argVals):
+            if type(arg) != int:
+                raise TypeError(f"{argNam[ind]} must be an integer")
+        for ind, arg in enumerate(argVals[0:2]):
+            if arg < 1:
+                raise ValueError(f"{argNam[ind]} must be > 0")
+        for ind, arg in enumerate(argVals[2:]):
+            if arg < 0:
+                raise ValueError(f"{argNam[ind + 2]} must be >= 0")
+        self.__width = width
+        self.__height = height
+        self.__x = x
+        self.__y = y
         super().__init__(id)
 
     def to_dictionary(self):
@@ -23,28 +36,40 @@ class Rectangle(Base):
         return self.width * self.height
 
     def update(self, *args, **kw):
-        """update the values"""
+        """updates values of rectangle **ugly** """
         if args:
-            i = 0
-            keys = ['id', 'width', 'height', 'x', 'y']
-            for arg in args:
-                setattr(self, keys[i], arg)
-                i += 1
-        elif kw:
-            for key, value in kw.items():
-                if hasattr(self, key):
-                    setattr(self, key, value)
+            for i, arg in enumerate(args):
+                if i == 0:
+                    self.id = arg
+                if i == 1:
+                    self.__width = arg
+                if i == 2:
+                    self.__height = arg
+                if i == 3:
+                    self.__x = arg
+                if i == 4:
+                    self.__y = arg
+        else:
+            try:
+                self.id = kw.get('id', self.id)
+                self.width = kw.get('width', self.width)
+                self.height = kw.get('height', self.height)
+                self.x = kw.get('x', self.x)
+                self.y = kw.get('y', self.y)
+            except Exception:
+                pass
 
     def display(self):
         """prints a rect"""
-        print('\n' * self.y, end="")
-        print(''.join(' ' * self.x + '#' * self.width + '\n'
-                      for times in range(self.height)), end="")
+        print(f"{chr(10) * self.y}", end="")
+        for i in range(self.height):
+            print(f"{' ' * self.x}{'#' * self.width}")
 
     def __str__(self):
-        """gets rect"""
-        return (f"[Rectangle] ({self.id})"
-                f" {self.x}/{self.y} - {self.width}/{self.height}")
+        """gets rectangle"""
+        return "[{}] ({}) {}/{} - {}/{}".format(
+            type(self).__name__, self.id, self.x, self.y,
+            self.width, self.height)
 
     @property
     def width(self):
