@@ -1,102 +1,67 @@
 #!/usr/bin/python3
-""" rectangle class"""
-from models.base import Base
+"""
+base module
+"""
+import json
+from os.path import isfile
 
 
-class Rectangle(Base):
-    """makes a new rectangle"""
-    def __init__(self, width, height, x=0, y=0, id=None):
-        """initializes"""
-        self.width = width
-        self.height = height
-        self.x = x
-        self.y = y
-        super().__init__(id)
+class Base:
+    """
+    Base Class that manages ids
+    """
+    __nb_objects = 0
 
-    def to_dictionary(self):
-        """dictionary"""
-        dic = {'id': self.id, 'width': self.width, 'height': self.height,
-               'x': self.x, 'y': self.y}
-        return dic
+    def __init__(self, id=None):
+        if id is not None:
+            self.id = id
+        else:
+            Base.__nb_objects += 1
+            self.id = Base.__nb_objects
 
-    def update(self, *args, **kwargs):
-        """updates attributes"""
-        if args:
-            i = 0
-            keys = ['id', 'width', 'height', 'x', 'y']
-            for arg in args:
-                setattr(self, keys[i], arg)
-                i += 1
-        elif kwargs:
-            for key, value in kwargs.items():
-                if hasattr(self, key):
-                    setattr(self, key, value)
+    @staticmethod
+    def to_json_string(list_dictionaries):
+        """ returns json representation of list_dictionaries """
+        if not list_dictionaries:
+            return "[]"
+        return json.dumps(list_dictionaries)
 
-    def validator(self, name, value):
-        """validates the shit out of it"""
-        if not isinstance(value, int):
-            raise TypeError("{} must be an integer".format(name))
-        if (name is 'width' or name is 'height') and value <= 0:
-            raise ValueError("{} must be > 0".format(name))
-        if (name is 'x' or name is 'y') and value < 0:
-            raise ValueError("{} must be >= 0".format(name))
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """ saves json string representation to file """
+        if not list_objs:
+            thelist = []
+        else:
+            thelist = [obj.to_dictionary() for obj in list_objs]
+        with open(f"{cls.__name__}.json", mode="w", encoding="utf-8") as file:
+            file.write(cls.to_json_string(thelist))
 
-    @property
-    def width(self):
-        """get width"""
-        return self.__width
+    @staticmethod
+    def from_json_string(json_string):
+        """returns json representation"""
+        if not json_string:
+            return []
+        return json.loads(json_string)
 
-    @property
-    def height(self):
-        """get height"""
-        return self.__height
+    @classmethod
+    def create(cls, **dictionary):
+        """returns instance with attr set"""
+        if cls.__name__ == "Rectangle":
+            dummy = cls(1, 1)
+        else:
+            dummy = cls(1)
+        dummy.update(**dictionary)
+        return dummy
 
-    @property
-    def x(self):
-        """get x"""
-        return self.__x
-
-    @property
-    def y(self):
-        """get y"""
-        return self.__y
-
-    @width.setter
-    def width(self, value):
-        """sets width"""
-        self.validator("width", value)
-        self.__width = value
-
-    @height.setter
-    def height(self, value):
-        """sets height"""
-        self.validator("height", value)
-        self.__height = value
-
-    @x.setter
-    def x(self, value):
-        self.validator("x", value)
-        """sets x"""
-        self.__x = value
-
-    @y.setter
-    def y(self, value):
-        """sets y"""
-        self.validator("y", value)
-        self.__y = value
-
-    def area(self):
-        """gets area"""
-        return self.width * self.height
-
-    def display(self):
-        """prints a rectangle of hashes"""
-        print('\n' * self.y, end="")
-        print(''.join(' ' * self.x + '#' * self.width + '\n'
-                      for times in range(self.height)), end="")
-
-    def __str__(self):
-        """gets rectangle"""
-        return "[{}] ({}) {}/{} - {}/{}".format(
-            type(self).__name__, self.id, self.x, self.y,
-            self.width, self.height)
+    @classmethod
+    def load_from_file(cls):
+        """ returns list of instances """
+        retList = []
+        if not isfile(f"{cls.__name__}.json"):
+            return retList
+        with open(f"{cls.__name__}.json", "r", encoding="utf-8") as file:
+            listaso = file.read()
+        listaso = cls.from_json_string(listaso)
+        for dict in listaso:
+            retList.append(cls.create(**dict))
+        return retList
