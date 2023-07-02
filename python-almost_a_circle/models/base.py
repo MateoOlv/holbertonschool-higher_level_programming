@@ -1,19 +1,16 @@
 #!/usr/bin/python3
-"""
-base module
-"""
+"""imports"""
 import json
-import os
-from os.path import isfile
+import csv
+import os.path
 
 
 class Base:
-    """
-    Base Class that manages ids
-    """
+    """base mange the id"""
     __nb_objects = 0
 
     def __init__(self, id=None):
+        """inits the class"""
         if id is not None:
             self.id = id
         else:
@@ -22,48 +19,74 @@ class Base:
 
     @staticmethod
     def to_json_string(list_dictionaries):
-        """ returns json representation of list_dictionaries """
-        if not list_dictionaries:
-            return "[]"
-        return json.dumps(list_dictionaries)
-
-    @classmethod
-    def save_to_file(cls, list_objs):
-        """ saves json string representation to file """
-        if not list_objs:
-            thelist = []
-        else:
-            thelist = [obj.to_dictionary() for obj in list_objs]
-        with open(f"{cls.__name__}.json", mode="w", encoding="utf-8") as file:
-            file.write(cls.to_json_string(thelist))
+        """json string"""
+        return json.dumps(list_dictionaries or [])
 
     @staticmethod
     def from_json_string(json_string):
-        """returns json representation"""
-        if not json_string:
-            return []
-        return json.loads(json_string)
+        """list of jsons"""
+        return json.loads(json_string or "[]")
 
     @classmethod
     def create(cls, **dictionary):
-        """returns instance with attr set"""
-        if cls.__name__ == "Rectangle":
-            dummy = cls(1, 1)
-        else:
-            dummy = cls(1)
-        dummy.update(**dictionary)
-        return dummy
+        """build the instance"""
+        if cls.__name__ is 'Square':
+            newcreate = cls(1)
+        if cls.__name__ is 'Rectangle':
+            newcreate = cls(1, 1)
+        if newcreate:
+            newcreate.update(**dictionary)
+            return newcreate
+
+    @classmethod
+    def save_to_file(cls, list_objs):
+        """savefile"""
+        try:
+            jsons = cls.to_json_string([x.to_dictionary() for x in list_objs])
+        except:
+            jsons = '[]'
+        with open(cls.__name__+'.json', 'w', encoding='utf-8') as f:
+            f.write(jsons)
 
     @classmethod
     def load_from_file(cls):
-        """Returns a list of instances"""
-        retList = []
-        file_name = f"{cls.__name__}.json"
+        if not os.path.isfile(cls.__name__ + '.json'):
+            return []
+        else:
+            with open(cls.__name__ + '.json', 'r', encoding='utf-8') as f:
+                list_dicts = cls.from_json_string(f.read())
+            return [cls.create(**dic) for dic in list_dicts]
+
+    @classmethod
+    def save_to_file_csv(cls, list_objs):
+        try:
+            csvs = [x.to_dictionary() for x in list_objs]
+        except AttributeError:
+            csvs = '[]'
+        if len(csv) == 0:
+            return
+        keys = csvs[0].keys()
+        file_name = cls.__name__ + '.csv'
+        with open(file_name, 'w', newline='') as f:
+            writer = csv.DictWriter(f, keys)
+            writer.writeheader()
+            writer.writerows(csvs)
+
+    @classmethod
+    def load_from_file_csv(cls):
+        file_name = cls.__name__ + '.csv'
         if not os.path.isfile(file_name):
-            return retList
-        with open(file_name, "r", encoding="utf-8") as file:
-            listaso = file.read()
-        listaso = cls.from_json_string(listaso)
-        for item in listaso:
-            retList.append(cls.create(**item))
-        return retList
+            return []
+        objects = []
+        with open(file_name, 'r') as f:
+            reader = csv.DictReader(f)
+            """num to ent"""
+            for row in reader:
+                for key, val in row.items():
+                    try:
+                        row[key] = int(val)
+                    except:
+                        pass
+            obj = cls.create(**row)
+            objects.append(obj)
+        return objects
