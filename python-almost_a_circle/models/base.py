@@ -3,6 +3,7 @@
 base module
 """
 import json
+import os
 from os.path import isfile
 
 
@@ -55,13 +56,14 @@ class Base:
 
     @classmethod
     def load_from_file(cls):
-        """ returns list of instances """
+        """Returns a list of instances"""
         retList = []
-        if not isfile(f"{cls.__name__}.json"):
+        file_name = f"{cls.__name__}.json"
+        if not os.path.isfile(file_name):
             return retList
-        with open(f"{cls.__name__}.json", "r", encoding="utf-8") as file:
+        with open(file_name, "r", encoding="utf-8") as file:
             listaso = file.read()
         listaso = cls.from_json_string(listaso)
-        for dict in listaso:
-            retList.append(cls.create(**dict))
+        for item in listaso:
+            retList.append(cls.create(**item))
         return retList
